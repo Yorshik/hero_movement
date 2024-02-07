@@ -48,15 +48,19 @@ if __name__ == '__main__':
     all_spites = pygame.sprite.Group()
     grasses = pygame.sprite.Group()
     boxes = pygame.sprite.Group()
-    with open('data/level.txt') as level:
-        data = level.read().split('\n')
-        print(data)
-        for i, line in enumerate(data):
-            for j, element in enumerate(line):
-                if element == 'g':
-                    grass = Grass(all_spites, grasses, x=i * 50, y=j * 50)
-                elif element == 'b':
-                    box = Box(all_spites, boxes, x=i * 50, y=j * 50)
+    try:
+        with open(f'data/levels/{input("Имя файла с уровенем: ")}') as level:
+            data = level.read().split('\n')
+            print(data)
+    except FileNotFoundError:
+        print('no such file')
+        quit()
+    for i, line in enumerate(data):
+        for j, element in enumerate(line):
+            if element == 'g':
+                grass = Grass(all_spites, grasses, x=i * 50, y=j * 50)
+            elif element == 'b':
+                box = Box(all_spites, boxes, x=i * 50, y=j * 50)
     mario = Player(all_spites)
     print_fg = False
     fg = pygame.transform.scale(pygame.image.load('data/fon.jpg'), (500, 500))
