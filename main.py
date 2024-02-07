@@ -43,13 +43,20 @@ def load_image(name, colorkey=None):
     return image
 
 
+def move_sprites(*groups, x, y):
+    for group in groups:
+        for sp in group.sprites():
+            sp.rect.y += y
+            sp.rect.x += x
+
+
 if __name__ == '__main__':
     screen = pygame.display.set_mode((500, 500))
     all_spites = pygame.sprite.Group()
     grasses = pygame.sprite.Group()
     boxes = pygame.sprite.Group()
     try:
-        with open(f'data/levels/{input("Имя файла с уровенем: ")}') as level:
+        with open(f'data/levels/{input("Имя файла с уровнем: ")}') as level:
             data = level.read().split('\n')
             print(data)
     except FileNotFoundError:
@@ -77,25 +84,25 @@ if __name__ == '__main__':
                     for sprite in all_spites:
                         if (sprite.name == 'grass' and mario.rect.y == sprite.rect.y and
                                 sprite.rect.x + 50 == mario.rect.x and not print_fg):
-                            mario.rect.x -= 50
+                            move_sprites(boxes, grasses, x=50, y=0)
                             break
                 elif event.key == pygame.K_RIGHT:
                     for sprite in all_spites:
                         if (sprite.name == 'grass' and mario.rect.y == sprite.rect.y and
                                 sprite.rect.x - 50 == mario.rect.x and not print_fg):
-                            mario.rect.x += 50
+                            move_sprites(boxes, grasses, x=-50, y=0)
                             break
                 elif event.key == pygame.K_UP:
                     for sprite in all_spites:
                         if (sprite.name == 'grass' and mario.rect.x == sprite.rect.x and
                                 sprite.rect.y + 50 == mario.rect.y and not print_fg):
-                            mario.rect.y -= 50
+                            move_sprites(boxes, grasses, x=0, y=50)
                             break
                 elif event.key == pygame.K_DOWN:
                     for sprite in all_spites:
                         if (sprite.name == 'grass' and mario.rect.x == sprite.rect.x and
                                 sprite.rect.y - 50 == mario.rect.y and not print_fg):
-                            mario.rect.y += 50
+                            move_sprites(boxes, grasses, x=0, y=-50)
                             break
         if mario.rect.x > 500:
             mario.rect.x = 450
@@ -105,6 +112,7 @@ if __name__ == '__main__':
             mario.rect.y = 450
         elif mario.rect.y < 0:
             mario.rect.y = 0
+        screen.fill((0, 0, 0))
         if print_fg:
             screen.blit(fg, (0, 0))
         else:
