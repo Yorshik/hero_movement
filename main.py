@@ -48,6 +48,14 @@ def move_sprites(*groups, x, y):
         for sp in group.sprites():
             sp.rect.y += y
             sp.rect.x += x
+            if sp.rect.x < 0:
+                sp.rect.x += 500
+            elif sp.rect.x > 450:
+                sp.rect.x -= 500
+            if sp.rect.y < 0:
+                sp.rect.y += 500
+            elif sp.rect.y > 450:
+                sp.rect.y -= 500
 
 
 if __name__ == '__main__':
